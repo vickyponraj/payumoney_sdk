@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
 
     if(ispayuSetup){
       payu.startPayment(
-          txnid: "IRD",
+          txnid: "",//Add Txn Id
           amount: "100",
           name:"" ,
           email: "",
