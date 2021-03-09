@@ -29,8 +29,8 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
      ispayuSetup=await payu.setupPayuDetails(
-         merchantID: "4955750",
-         merchantKey: "k5SC5F",
+         merchantID: "",
+         merchantKey: "",
          isProduction: false,
          activityTitle: "Test",
          disableExitConfirmation: true);
@@ -47,11 +47,11 @@ class _MyAppState extends State<MyApp> {
       payu.startPayment(
           txnid: "IRD",
           amount: "100",
-          name:"saurabh" ,
-          email: "saurabh.kanaujia@siply.in",
-          phone: "7045202875",
-          productName: "Siply",
-          hash: "#kkk");
+          name:"" ,
+          email: "",
+          phone: "",
+          productName: "",
+          hash: "");
     }
 
     setState(() {
