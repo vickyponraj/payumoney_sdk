@@ -1,3 +1,7 @@
 ## 0.0.1
 
-* Bug fixes.
+* Initial Release.
+
+## 0.0.2
+
+* Initial Release.
