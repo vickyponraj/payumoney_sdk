@@ -38,14 +38,15 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
   private MethodChannel channel;
   private MethodChannel.Result mainResult;
   private Activity activity;
-  private Context context;
-
   private String merchantKey;
   private String merchantID;
+  private  Context context;
+  private ActivityPluginBinding pluginBinding;
   private static final String TAG = "PayuMoney Flutter Plugin";
   private boolean isProduction = false;
   PayUmoneySdkInitializer.PaymentParam paymentParam = null;
-  PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
+  PayUmoneySdkInitializer.PaymentParam.Builder builder = new
+          PayUmoneySdkInitializer.PaymentParam.Builder();
   PayUmoneyConfig payUmoneyConfig = PayUmoneyConfig.getInstance();
 
 
@@ -99,12 +100,14 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
   @Override
   public boolean onActivityResult(int requestCode, int resultCode, Intent data){
+
+
     Log.e(TAG,"request code "+requestCode+" result code "+resultCode);
     if(requestCode==PayUmoneyFlowManager.REQUEST_CODE_PAYMENT&&resultCode==RESULT_OK&&data!=null){
       TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager.INTENT_EXTRA_TRANSACTION_RESPONSE);
 
       if(transactionResponse!=null&&transactionResponse.getPayuResponse()!=null){
-        if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+        if(transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
 
           HashMap<String, Object> response = new HashMap<String, Object>();
           response.put("status", "success");
@@ -120,13 +123,13 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
       }
 
     }
-    return  true;
+    return  false;
   }
 
 
   private void startPayment(MethodCall call) {
     builder.setAmount((String) call.argument("amount"))
-            .setTxnId((String) call.argument("txnid"))
+            .setTxnId((String) call.argument("orderID"))
             .setPhone((String) call.argument("phone"))
             .setProductName((String) call.argument("productName"))
             .setFirstName((String) call.argument("firstname"))
@@ -151,9 +154,12 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
       this.paymentParam = builder.build();
       this.paymentParam.setMerchantHash((String) call.argument("hash"));
 
-
       PayUmoneyFlowManager.startPayUMoneyFlow(paymentParam, this.activity, R.style.AppTheme_default, true);
       payUmoneyConfig.setColorPrimary("#eb4034");
+
+      Log.e(TAG,"Amount "+(String)call.argument("amount")+" txnId: "+ (String)call.argument("orderID")+
+              " Hash:"+
+              (String)call.argument("hash"));
 
     } catch (Exception e) {
       mainResult.error("ERROR", e.getMessage(), null);
@@ -164,19 +170,26 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     this.activity = binding.getActivity();
+    Log.e("this is a test",String.valueOf(activity));
+    this.pluginBinding=binding;
     binding.addActivityResultListener(this);
   }
 
   @Override
   public void onDetachedFromActivityForConfigChanges() {
+   onDetachedFromActivity();
+
   }
 
   @Override
   public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
-
+    onAttachedToActivity(binding);
   }
+
 
   @Override
   public void onDetachedFromActivity() {
+   pluginBinding.removeActivityResultListener(this);
+   pluginBinding=null;
   }
 }

@@ -20,7 +20,7 @@ class PayumoneySdk {
 
 
   Future<dynamic> startPayment(
-      {@required String txnid,
+      {@required String txnID,
         @required String amount,
         @required String name,
         @required String email,
@@ -29,15 +29,15 @@ class PayumoneySdk {
         @required String hash}) async {
     try {
       var data = await _channel.invokeMethod("startPayment", {
-        "txnid": txnid,
         "hash": hash,
+        "orderID": txnID,
         "amount": amount,
         "phone": phone,
         "email": email,
         "productName": productName,
         "firstname": name
       });
-      debugPrint(data);
+
 
       return data;
     } catch (e) {
