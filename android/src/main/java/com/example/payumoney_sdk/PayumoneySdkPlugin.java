@@ -4,21 +4,25 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.text.TextUtils;
 import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+
+
 import com.payu.base.models.ErrorResponse;
 import com.payu.base.models.PayUBillingCycle;
 import com.payu.base.models.PayUPaymentParams;
-import  com.payu.base.models.PayUSIParams;
+import com.payu.base.models.PayUSIParams;
 import com.payu.checkoutpro.PayUCheckoutPro;
 import com.payu.checkoutpro.utils.PayUCheckoutProConstants;
+
+
 import com.payu.ui.model.listeners.PayUCheckoutProListener;
 import com.payu.ui.model.listeners.PayUHashGenerationListener;
-
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -142,7 +146,10 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
             .setFurl((String)call.argument("failureURL"))
             .setIsProduction((boolean)call.argument("isProduction"))
             .setKey((String)call.argument("merchantKey"))
-            .setUserCredential((String)call.argument("userCredentials"));
+            .setUserCredential((String)call.argument("userCredentials"))
+            .setPayUSIParams(siDetails)
+
+    ;
 
 
     if(siDetails!=null){
@@ -153,17 +160,30 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
     try {
       this.payUPaymentParams = builder.build();
-      startPayment(this.payUPaymentParams,(String)call.argument("hash"));
 
 
-//      String hashSequence = this.merchantKey +"|"+
-//              (String) call.argument("orderID") +"|" +(String) call.argument("amount")+"|" +(String) call.argument("productName")+"|" +
-//              (String) call.argument("firstname") +"|" + (String) call.argument("email") +"|||||||||||" +
-//              "seVTUgzrgE"
-              //"cMDID7EG"
+     //   SHA512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||si_details|SALT)
 
-          //    ;
-     // String serverCalculatedHash= hashCal("SHA-512", hashSequence);
+      String hashSequence = (String)call.argument("merchantKey") +"|"+
+              (String) call.argument("transactionId") +"|" +(String) call.argument("amount")+"|"
+              +(String) call.argument("productInfo")+"|" +
+              (String) call.argument("firstName") +"|" + (String) call.argument("email") +"|||||||||||" + "cMDID7EG";
+
+
+
+
+
+      Log.d(TAG, "Key : "+(String)call.argument("merchantKey")+" txn: "+ (String) call.argument("transactionId")+" amount "+(String) call.argument("amount")
+        +" productInfo "+(String) call.argument("productInfo")+" name "+(String) call.argument("firstName")+" email "+ (String) call.argument("email")
+
+        +" hash "+(String)call.argument("hash")
+        );
+
+
+
+              ;
+      String serverCalculatedHash= hashCal("SHA-512", hashSequence);
+        startPayment(this.payUPaymentParams,serverCalculatedHash);
 
 
 
@@ -175,8 +195,8 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
 
   private void startPayment(PayUPaymentParams payUPaymentParams,final String hash){
-    PayUCheckoutPro.open(
-            this,
+   PayUCheckoutPro.open(
+            activity,
             payUPaymentParams,
             new PayUCheckoutProListener() {
 
@@ -210,6 +230,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
               @Override
               public void onError(ErrorResponse errorResponse) {
                 String errorMessage = errorResponse.getErrorMessage();
+                Log.e(TAG,errorMessage);
               }
 
               @Override
@@ -219,10 +240,16 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
               @Override
               public void generateHash(HashMap<String, String> valueMap, PayUHashGenerationListener hashGenerationListener) {
-                String hashName =valueMap.get(PayUCheckoutProConstants.CP_HASH_NAME);
-                HashMap<String, String> dataMap = new HashMap<>();
-                dataMap.put(hashName, hash);
-                 hashGenerationListener.onHashGenerated(dataMap);
+                  String hashName = valueMap.get(PayUCheckoutProConstants.CP_HASH_NAME);
+
+                     if(hashName.isEmpty()){
+                         return;
+                     }
+                      //Do not generate hash from local, it needs to be calculated from server side only. Here, hashString contains hash created from your server side.
+                      String hashVal = hash;
+                      HashMap<String, String> dataMap = new HashMap<>();
+                      dataMap.put(hashName, hashVal);
+                      hashGenerationListener.onHashGenerated(dataMap);
 
               }
             }

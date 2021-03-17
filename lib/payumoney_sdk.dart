@@ -44,7 +44,7 @@ class PayumoneySdk {
        "email":email,
        "successURL":successURL,
        "failureURL":failureURL,
-       "isProduction":"${isProduction}",
+       "isProduction":isProduction,
        "merchantKey":merchantKey,
        "userCredentials":userCredentials,
        "hash":hash
