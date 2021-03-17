@@ -102,9 +102,9 @@ class _MyAppState extends State<MyApp> {
           firstName: payuOrderId.data.name,
           email: payuOrderId.data.email,
           hash: payuOrderId.data.hash,
-          isProduction: false,
+          isProduction: true,
           userCredentials: payuOrderId.data.mobile,
-          merchantKey: "gtKFFx");
+          merchantKey: "mWI8Vl");
 
 
       // payu.startPayment(

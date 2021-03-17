@@ -95,26 +95,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
 
     Log.e(TAG,"request code "+requestCode+" result code "+resultCode);
-//    if(requestCode==PayUmoneyFlowManager.REQUEST_CODE_PAYMENT&&resultCode==RESULT_OK&&data!=null){
-//      TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager.INTENT_EXTRA_TRANSACTION_RESPONSE);
-//
-//      if(transactionResponse!=null&&transactionResponse.getPayuResponse()!=null){
-//        if(transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
-//
-//          HashMap<String, Object> response = new HashMap<String, Object>();
-//          response.put("status", "success");
-//          response.put("message", transactionResponse.getMessage());
-//          mainResult.success(response);
-//        } else {
-//          HashMap<String, Object> response = new HashMap<String, Object>();
-//          response.put("message", transactionResponse.getMessage());
-//          response.put("status", "failed");
-//
-//          mainResult.success(response);
-//        }
-//      }
-//
-//    }
+
     return  false;
   }
 
@@ -147,7 +128,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
             .setIsProduction((boolean)call.argument("isProduction"))
             .setKey((String)call.argument("merchantKey"))
             .setUserCredential((String)call.argument("userCredentials"))
-            .setPayUSIParams(siDetails)
+
 
     ;
 
@@ -164,10 +145,10 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
      //   SHA512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||si_details|SALT)
 
-      String hashSequence = (String)call.argument("merchantKey") +"|"+
-              (String) call.argument("transactionId") +"|" +(String) call.argument("amount")+"|"
-              +(String) call.argument("productInfo")+"|" +
-              (String) call.argument("firstName") +"|" + (String) call.argument("email") +"|||||||||||" + "cMDID7EG";
+//      String hashSequence = (String)call.argument("merchantKey") +"|"+
+//              (String) call.argument("transactionId") +"|" +(String) call.argument("amount")+"|"
+//              +(String) call.argument("productInfo")+"|" +
+//              (String) call.argument("firstName") +"|" + (String) call.argument("email") +"|||||||||||" + "eCwWELxi";
 
 
 
@@ -181,9 +162,9 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
 
 
-              ;
-      String serverCalculatedHash= hashCal("SHA-512", hashSequence);
-        startPayment(this.payUPaymentParams,serverCalculatedHash);
+//              ;
+//      String serverCalculatedHash= hashCal("SHA-512", hashSequence);
+        startPayment(this.payUPaymentParams,(String) call.argument("hash"));
 
 
 
@@ -240,16 +221,12 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
               @Override
               public void generateHash(HashMap<String, String> valueMap, PayUHashGenerationListener hashGenerationListener) {
-                  String hashName = valueMap.get(PayUCheckoutProConstants.CP_HASH_NAME);
-
-                     if(hashName.isEmpty()){
-                         return;
-                     }
-                      //Do not generate hash from local, it needs to be calculated from server side only. Here, hashString contains hash created from your server side.
+                   //Do not generate hash from local, it needs to be calculated from server side only. Here, hashString contains hash created from your server side.
                       String hashVal = hash;
                       HashMap<String, String> dataMap = new HashMap<>();
-                      dataMap.put(hashName, hashVal);
+                      dataMap.put("hashName", hashVal);
                       hashGenerationListener.onHashGenerated(dataMap);
+                  Log.d(TAG,"hash value is "+hashVal);
 
               }
             }
