@@ -16,8 +16,7 @@ class PayumoneySdk {
 
 
 
-
-   Future<dynamic> buildPaymentParams({
+  Future<dynamic> buildPaymentParams({
      @required String amount,
      @required String transactionId,
      @required String phone,
@@ -25,6 +24,7 @@ class PayumoneySdk {
      @required String firstName,
      @required String email,
      @required String hash,
+     @required String salt,
      String successURL="https://www.payumoney.com/mobileapp/payumoney/success.php",
      String failureURL="https://www.payumoney.com/mobileapp/payumoney/failure.php",
      @required String merchantKey,
@@ -35,7 +35,7 @@ class PayumoneySdk {
      ///Falure URL="https://www.payumoney.com/mobileapp/payumoney/failure.php"
 
    try{
-     await _channel.invokeMethod("buildPaymentParams",{
+   final data=  await _channel.invokeMethod("buildPaymentParams",{
        "amount":amount,
        "transactionId":transactionId,
        "phone":phone,
@@ -47,8 +47,13 @@ class PayumoneySdk {
        "isProduction":isProduction,
        "merchantKey":merchantKey,
        "userCredentials":userCredentials,
-       "hash":hash
+       "hash":hash,
+        "salt":salt,
      });
+
+
+
+   return data;
    }catch (e){
      debugPrint(e.toString());
    }

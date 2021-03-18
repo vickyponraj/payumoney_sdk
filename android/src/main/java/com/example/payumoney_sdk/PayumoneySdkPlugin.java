@@ -143,28 +143,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
       this.payUPaymentParams = builder.build();
 
 
-     //   SHA512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||si_details|SALT)
-
-//      String hashSequence = (String)call.argument("merchantKey") +"|"+
-//              (String) call.argument("transactionId") +"|" +(String) call.argument("amount")+"|"
-//              +(String) call.argument("productInfo")+"|" +
-//              (String) call.argument("firstName") +"|" + (String) call.argument("email") +"|||||||||||" + "eCwWELxi";
-
-
-
-
-
-      Log.d(TAG, "Key : "+(String)call.argument("merchantKey")+" txn: "+ (String) call.argument("transactionId")+" amount "+(String) call.argument("amount")
-        +" productInfo "+(String) call.argument("productInfo")+" name "+(String) call.argument("firstName")+" email "+ (String) call.argument("email")
-
-        +" hash "+(String)call.argument("hash")
-        );
-
-
-
-//              ;
-//      String serverCalculatedHash= hashCal("SHA-512", hashSequence);
-        startPayment(this.payUPaymentParams,(String) call.argument("hash"));
+      startPayment(this.payUPaymentParams,(String)call.argument("salt"));
 
 
 
@@ -175,7 +154,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
   }
 
 
-  private void startPayment(PayUPaymentParams payUPaymentParams,final String hash){
+  private void startPayment(PayUPaymentParams payUPaymentParams,final  String salt){
    PayUCheckoutPro.open(
             activity,
             payUPaymentParams,
@@ -221,12 +200,23 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
               @Override
               public void generateHash(HashMap<String, String> valueMap, PayUHashGenerationListener hashGenerationListener) {
-                   //Do not generate hash from local, it needs to be calculated from server side only. Here, hashString contains hash created from your server side.
-                      String hashVal = hash;
-                      HashMap<String, String> dataMap = new HashMap<>();
-                      dataMap.put("hashName", hashVal);
-                      hashGenerationListener.onHashGenerated(dataMap);
-                  Log.d(TAG,"hash value is "+hashVal);
+
+                     String hashName = valueMap.get(PayUCheckoutProConstants.CP_HASH_NAME);
+                    String hashData = valueMap.get(PayUCheckoutProConstants.CP_HASH_STRING);
+                    String hashVal="";
+                    HashMap<String, String> dataMap = new HashMap<>();
+                    if(hashName!=null&&(!hashName.isEmpty())&&hashName.equals("vas_for_mobile_sdk")){
+                        hashVal=hashData+salt;
+                    }else {
+                        hashVal=hashData+salt;
+                    }
+
+
+                  String calculatedHash=hashCal("SHA-512", hashVal);
+
+                    dataMap.put(hashName, calculatedHash);
+                    hashGenerationListener.onHashGenerated(dataMap);
+
 
               }
             }
