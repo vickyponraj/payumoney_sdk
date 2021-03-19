@@ -16,7 +16,7 @@ class PayumoneySdk {
 
 
 
-  Future<dynamic> buildPaymentParams({
+  Future<Map<dynamic,dynamic>> buildPaymentParams({
      @required String amount,
      @required String transactionId,
      @required String phone,
@@ -56,6 +56,12 @@ class PayumoneySdk {
    return data;
    }catch (e){
      debugPrint(e.toString());
+
+     final errorResponse={
+       "status":"failed",
+       "message":"payment canceled"
+     };
+     return errorResponse;
    }
    }
 

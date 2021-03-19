@@ -186,7 +186,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
               @Override
               public void onPaymentCancel(boolean isTxnInitiated) {
 
-                  HashMap<String,Object> result = (HashMap<String, Object>);
+                  HashMap<String,Object> result =new HashMap<String, Object>();
                 result.put("status", "failed");
                 result.put("message","Payment canceled");
                 mainResult.success(result);
