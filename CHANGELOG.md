@@ -13,3 +13,8 @@
 ## 0.0.4
 -Uniform response for payment failure and success
 -Error handling
+
+
+## 0.0.5
+-Response handling for error
+
