@@ -166,7 +166,8 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
                 HashMap<String,Object> result = (HashMap<String, Object>) response;
                 String payuResponse = (String)result.get(PayUCheckoutProConstants.CP_PAYU_RESPONSE);
                 String merchantResponse = (String) result.get(PayUCheckoutProConstants.CP_MERCHANT_RESPONSE);
-
+                result.put("status", "success");
+                result.put("message","Payment success");
                 mainResult.success(result);
 
               }
@@ -177,14 +178,18 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
                 HashMap<String,Object> result = (HashMap<String, Object>) response;
                 String payuResponse = (String)result.get(PayUCheckoutProConstants.CP_PAYU_RESPONSE);
                 String merchantResponse = (String) result.get(PayUCheckoutProConstants.CP_MERCHANT_RESPONSE);
-
-                mainResult.error("400","Payment failed","Payment failed");
+                result.put("status", "failed");
+                result.put("message","Payment failed");
+                mainResult.success(result);
               }
 
               @Override
               public void onPaymentCancel(boolean isTxnInitiated) {
 
-                mainResult.error("400","Payment failed","Payment failed");
+                  HashMap<String,Object> result = (HashMap<String, Object>);
+                result.put("status", "failed");
+                result.put("message","Payment canceled");
+                mainResult.success(result);
               }
 
               @Override
