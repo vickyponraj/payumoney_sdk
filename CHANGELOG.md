@@ -20,3 +20,6 @@
 
 ## 0.0.6
 -Added Phonepe,Gpay and Paytm intent
+
+## 0.0.7
+-Bug fixes
