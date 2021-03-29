@@ -122,9 +122,9 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
   private void buildPaymentParams(MethodCall call) {
       ArrayList<PaymentMode> checkoutOrderList = new ArrayList<>();
-      checkoutOrderList.add(new PaymentMode(PaymentType.UPI, PayUCheckoutProConstants.CP_GOOGLE_PAY));
-      checkoutOrderList.add(new PaymentMode(PaymentType.WALLET, PayUCheckoutProConstants.CP_PHONEPE));
-      checkoutOrderList.add(new PaymentMode(PaymentType.WALLET, PayUCheckoutProConstants.CP_PAYTM));
+      checkoutOrderList.add(new PaymentMode(PaymentType.UPI_INTENT, PayUCheckoutProConstants.CP_GOOGLE_PAY));
+      checkoutOrderList.add(new PaymentMode(PaymentType.UPI_INTENT, PayUCheckoutProConstants.CP_PHONEPE));
+      checkoutOrderList.add(new PaymentMode(PaymentType.UPI_INTENT, PayUCheckoutProConstants.CP_PAYTM));
       PayUCheckoutProConfig payUCheckoutProConfig = new PayUCheckoutProConfig ();
       payUCheckoutProConfig.setPaymentModesOrder(checkoutOrderList);
 
