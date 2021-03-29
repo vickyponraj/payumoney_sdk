@@ -23,3 +23,6 @@
 
 ## 0.0.7
 -Bug fixes
+
+## 0.0.8
+-Added UPI_INTENT for payment gateways
