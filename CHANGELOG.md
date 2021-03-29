@@ -18,3 +18,5 @@
 ## 0.0.5
 -Response handling for error
 
+## 0.0.6
+-Added Phonepe,Gpay and Paytm intent

@@ -17,7 +17,10 @@ import com.payu.base.models.ErrorResponse;
 import com.payu.base.models.PayUBillingCycle;
 import com.payu.base.models.PayUPaymentParams;
 import com.payu.base.models.PayUSIParams;
+import com.payu.base.models.PaymentMode;
+import com.payu.base.models.PaymentType;
 import com.payu.checkoutpro.PayUCheckoutPro;
+import com.payu.checkoutpro.models.PayUCheckoutProConfig;
 import com.payu.checkoutpro.utils.PayUCheckoutProConstants;
 
 
@@ -26,6 +29,7 @@ import com.payu.ui.model.listeners.PayUHashGenerationListener;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -117,6 +121,13 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
 
   private void buildPaymentParams(MethodCall call) {
+      ArrayList<PaymentMode> checkoutOrderList = new ArrayList<>();
+      checkoutOrderList.add(new PaymentMode(PaymentType.UPI, PayUCheckoutProConstants.CP_GOOGLE_PAY));
+      checkoutOrderList.add(new PaymentMode(PaymentType.WALLET, PayUCheckoutProConstants.CP_PHONEPE));
+      checkoutOrderList.add(new PaymentMode(PaymentType.WALLET, PayUCheckoutProConstants.CP_PAYTM));
+      PayUCheckoutProConfig payUCheckoutProConfig = new PayUCheckoutProConfig ();
+      payUCheckoutProConfig.setPaymentModesOrder(checkoutOrderList);
+
     builder.setAmount((String) call.argument("amount"))
             .setTransactionId((String) call.argument("transactionId"))
             .setPhone((String) call.argument("phone"))
@@ -127,8 +138,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
             .setFurl((String)call.argument("failureURL"))
             .setIsProduction((boolean)call.argument("isProduction"))
             .setKey((String)call.argument("merchantKey"))
-            .setUserCredential((String)call.argument("userCredentials"))
-
+            .setUserCredential((String)call.argument("userCredentials"));
 
     ;
 
