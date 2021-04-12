@@ -26,3 +26,7 @@
 
 ## 0.0.8
 -Added UPI_INTENT for payment gateways
+
+## 0.0.9
+-Now can pass Merchant name as parameter as well
+-Added UPI flow

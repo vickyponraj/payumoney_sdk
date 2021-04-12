@@ -128,10 +128,6 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
 
 
-
-
-
-
       builder.setAmount((String) call.argument("amount"))
             .setTransactionId((String) call.argument("transactionId"))
             .setPhone((String) call.argument("phone"))
