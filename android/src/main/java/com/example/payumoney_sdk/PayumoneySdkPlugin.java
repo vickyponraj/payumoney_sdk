@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 
 import com.payu.base.models.ErrorResponse;
+import com.payu.base.models.OrderDetails;
 import com.payu.base.models.PayUBillingCycle;
 import com.payu.base.models.PayUPaymentParams;
 import com.payu.base.models.PayUSIParams;
@@ -22,6 +23,7 @@ import com.payu.base.models.PaymentType;
 import com.payu.checkoutpro.PayUCheckoutPro;
 import com.payu.checkoutpro.models.PayUCheckoutProConfig;
 import com.payu.checkoutpro.utils.PayUCheckoutProConstants;
+
 
 
 import com.payu.ui.model.listeners.PayUCheckoutProListener;
@@ -121,14 +123,16 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
 
 
   private void buildPaymentParams(MethodCall call) {
-      ArrayList<PaymentMode> checkoutOrderList = new ArrayList<>();
-      checkoutOrderList.add(new PaymentMode(PaymentType.UPI_INTENT, PayUCheckoutProConstants.CP_GOOGLE_PAY));
-      checkoutOrderList.add(new PaymentMode(PaymentType.UPI_INTENT, PayUCheckoutProConstants.CP_PHONEPE));
-      checkoutOrderList.add(new PaymentMode(PaymentType.UPI_INTENT, PayUCheckoutProConstants.CP_PAYTM));
       PayUCheckoutProConfig payUCheckoutProConfig = new PayUCheckoutProConfig ();
-      payUCheckoutProConfig.setPaymentModesOrder(checkoutOrderList);
+      payUCheckoutProConfig.setMerchantName((String)call.argument("merchantName"));
 
-    builder.setAmount((String) call.argument("amount"))
+
+
+
+
+
+
+      builder.setAmount((String) call.argument("amount"))
             .setTransactionId((String) call.argument("transactionId"))
             .setPhone((String) call.argument("phone"))
             .setProductInfo((String) call.argument("productInfo"))
@@ -138,9 +142,10 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
             .setFurl((String)call.argument("failureURL"))
             .setIsProduction((boolean)call.argument("isProduction"))
             .setKey((String)call.argument("merchantKey"))
-            .setUserCredential((String)call.argument("userCredentials"));
+              .setUserCredential((String)call.argument("userCredentials"));
 
-    ;
+
+
 
 
     if(siDetails!=null){
@@ -152,8 +157,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
     try {
       this.payUPaymentParams = builder.build();
 
-
-      startPayment(this.payUPaymentParams,(String)call.argument("salt"));
+      startPayment(this.payUPaymentParams,payUCheckoutProConfig,(String)call.argument("salt"));
 
 
 
@@ -164,10 +168,11 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
   }
 
 
-  private void startPayment(PayUPaymentParams payUPaymentParams,final  String salt){
+  private void startPayment(PayUPaymentParams payUPaymentParams,PayUCheckoutProConfig payUCheckoutProConfig,final  String salt){
    PayUCheckoutPro.open(
             activity,
             payUPaymentParams,
+            payUCheckoutProConfig,
             new PayUCheckoutProListener() {
 
               @Override
@@ -226,9 +231,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
                         hashVal=hashData+salt;
                     }
 
-
-                  String calculatedHash=hashCal("SHA-512", hashVal);
-
+                    String calculatedHash=hashCal("SHA-512", hashVal);
                     dataMap.put(hashName, calculatedHash);
                     hashGenerationListener.onHashGenerated(dataMap);
 

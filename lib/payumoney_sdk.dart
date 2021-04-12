@@ -29,7 +29,8 @@ class PayumoneySdk {
      String failureURL="https://www.payumoney.com/mobileapp/payumoney/failure.php",
      @required String merchantKey,
      bool isProduction=false,
-     String userCredentials
+     String userCredentials,
+     String merchantName="Payu"
    })async{
      ///Success URL="https://www.payumoney.com/mobileapp/payumoney/success.php"
      ///Falure URL="https://www.payumoney.com/mobileapp/payumoney/failure.php"
@@ -49,6 +50,7 @@ class PayumoneySdk {
        "userCredentials":userCredentials,
        "hash":hash,
         "salt":salt,
+        "merchantName":merchantName
      });
 
 

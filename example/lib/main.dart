@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
       userCredentials: "9999999999",
       merchantKey: "gtKFFX",
       salt: "eCwWELxi",
+      merchantName: "My merchant name"
     );
 
     Navigator.pop(context);
