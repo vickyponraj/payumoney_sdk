@@ -30,3 +30,6 @@
 ## 0.0.9
 -Now can pass Merchant name as parameter as well
 -Added UPI flow
+
+## 1.0.0
+-Bug Fixes
