@@ -207,6 +207,10 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
               public void onError(ErrorResponse errorResponse) {
                 String errorMessage = errorResponse.getErrorMessage();
                 Log.e(TAG,errorMessage);
+                HashMap<String,Object> result =new HashMap<String, Object>();
+                result.put("status", "failed");
+                result.put("message","Something went wrong");
+                mainResult.success(result);
               }
 
               @Override
