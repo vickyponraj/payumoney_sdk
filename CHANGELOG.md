@@ -33,3 +33,7 @@
 
 ## 1.0.0
 -Bug Fixes
+
+## 1.0.1
+-Updated Payu checkout pro sdk verison
+-Added exit confirmation docs
