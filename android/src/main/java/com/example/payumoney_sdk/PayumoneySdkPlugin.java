@@ -144,7 +144,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
             .setFurl((String)call.argument("failureURL"))
             .setIsProduction((boolean)call.argument("isProduction"))
             .setKey((String)call.argument("merchantKey"))
-              .setUserCredential((String)call.argument("userCredentials");
+              .setUserCredential((String)call.argument("userCredentials"));
 
 
 

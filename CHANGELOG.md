@@ -37,3 +37,7 @@
 ## 1.0.1
 -Updated Payu checkout pro sdk verison
 -Added exit confirmation docs
+
+## 1.0.2
+-Updated Payu checkout pro sdk verison
+-Added exit confirmation docs
