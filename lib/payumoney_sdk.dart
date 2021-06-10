@@ -51,7 +51,7 @@ class PayumoneySdk {
        "userCredentials":userCredentials,
        "hash":hash,
         "salt":salt,
-        "merchantName":merchantName
+        "merchantName":merchantName,
         "showExitConfirmation":showExitConfirmation??true
      });
 
