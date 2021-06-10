@@ -125,6 +125,12 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
   private void buildPaymentParams(MethodCall call) {
       PayUCheckoutProConfig payUCheckoutProConfig = new PayUCheckoutProConfig ();
       payUCheckoutProConfig.setMerchantName((String)call.argument("merchantName"));
+      payUCheckoutProConfig.getShowExitConfirmationOnPaymentScreen((boolean)call.argument("showExitConfirmation"));
+
+
+
+
+
 
 
 
@@ -138,7 +144,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
             .setFurl((String)call.argument("failureURL"))
             .setIsProduction((boolean)call.argument("isProduction"))
             .setKey((String)call.argument("merchantKey"))
-              .setUserCredential((String)call.argument("userCredentials"));
+              .setUserCredential((String)call.argument("userCredentials");
 
 
 
