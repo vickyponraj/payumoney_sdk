@@ -212,7 +212,6 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
               @Override
               public void onError(ErrorResponse errorResponse) {
                 String errorMessage = errorResponse.getErrorMessage();
-                Log.e(TAG,errorMessage);
                 HashMap<String,Object> result =new HashMap<String, Object>();
                 result.put("status", "failed");
                 result.put("message","Something went wrong");
@@ -253,7 +252,6 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     this.activity = binding.getActivity();
-    Log.e("this is a test",String.valueOf(activity));
     this.pluginBinding=binding;
     binding.addActivityResultListener(this);
   }
