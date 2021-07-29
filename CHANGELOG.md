@@ -49,3 +49,6 @@
 ## 1.0.4
 -Updated Payu checkout pro sdk verison
 -Removed error logs
+
+## 1.0.5
+-Updated Payu checkout pro sdk to 1.7.1
