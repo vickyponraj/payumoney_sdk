@@ -39,6 +39,6 @@ android {
 }
 
 dependencies{
-    implementation 'in.payu:payu-checkout-pro:1.7.0'
+    implementation 'in.payu:payu-checkout-pro:1.7.1'
 
 }
