@@ -52,7 +52,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 /** PayumoneySdkPlugin */
-public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,PluginRegistry.ActivityResultListener,ActivityAware {
+public class PayUMoneySdkPlugin implements FlutterPlugin, MethodCallHandler,PluginRegistry.ActivityResultListener,ActivityAware {
   private MethodChannel channel;
   private MethodChannel.Result mainResult;
   private Activity activity;
@@ -188,6 +188,8 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
                 HashMap<String,Object> result = (HashMap<String, Object>) response;
                 String payuResponse = (String)result.get(PayUCheckoutProConstants.CP_PAYU_RESPONSE);
                 String merchantResponse = (String) result.get(PayUCheckoutProConstants.CP_MERCHANT_RESPONSE);
+                  android.util.Log.d(TAG, "onPaymentFailure: "+payuResponse);
+                  android.util.Log.d(TAG, "onPaymentFailure: "+merchantResponse);
                 result.put("status", "failed");
                 result.put("message","Payment failed");
                 mainResult.success(result);
@@ -206,7 +208,8 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
               public void onError(ErrorResponse errorResponse) {
                 String errorMessage = errorResponse.getErrorMessage();
                 HashMap<String,Object> result =new HashMap<String, Object>();
-                result.put("status", "failed");
+                  android.util.Log.d(TAG, "onPaymentError: "+errorMessage);
+                  result.put("status", "failed");
                 result.put("message","Something went wrong");
                 mainResult.success(result);
               }

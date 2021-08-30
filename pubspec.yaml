@@ -30,8 +30,8 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.payumoney_sdk
-        pluginClass: PayumoneySdkPlugin
+        package: com.kishorp18.android.payumoney_sdk
+        pluginClass: PayUMoneySdkPlugin
 #      ios:
 #        pluginClass: PayumoneySdkPlugin
 
