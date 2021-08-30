@@ -52,13 +52,13 @@ import static android.app.Activity.RESULT_OK;
 
 
 /** PayumoneySdkPlugin */
-public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,PluginRegistry.ActivityResultListener,ActivityAware {
+public class PayUMoneySdkPlugin implements FlutterPlugin, MethodCallHandler,PluginRegistry.ActivityResultListener,ActivityAware {
   private MethodChannel channel;
   private MethodChannel.Result mainResult;
   private Activity activity;
   private  Context context;
   private ActivityPluginBinding pluginBinding;
-  private static final String TAG = "PayuMoney Flutter Plugin";
+  private static final String TAG = "PayuMoney";
   private boolean isProduction = false;
   PayUPaymentParams.Builder builder = new PayUPaymentParams.Builder();
   PayUPaymentParams payUPaymentParams =null;
@@ -125,14 +125,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
   private void buildPaymentParams(MethodCall call) {
       PayUCheckoutProConfig payUCheckoutProConfig = new PayUCheckoutProConfig ();
       payUCheckoutProConfig.setMerchantName((String)call.argument("merchantName"));
-
-
-
-
-
-
-
-
+      String paymentHashCode = (String) call.argument(Constants.PaymentHashValue);
 
       builder.setAmount((String) call.argument("amount"))
             .setTransactionId((String) call.argument("transactionId"))
@@ -159,7 +152,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
     try {
       this.payUPaymentParams = builder.build();
 
-      startPayment(this.payUPaymentParams,payUCheckoutProConfig,(String)call.argument("salt"));
+      startPayment(this.payUPaymentParams,payUCheckoutProConfig,(String)call.argument("salt"),paymentHashCode);
 
 
 
@@ -170,7 +163,7 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
   }
 
 
-  private void startPayment(PayUPaymentParams payUPaymentParams,PayUCheckoutProConfig payUCheckoutProConfig,final  String salt){
+  private void startPayment(PayUPaymentParams payUPaymentParams,PayUCheckoutProConfig payUCheckoutProConfig,final  String salt,String paymentHashCode){
    PayUCheckoutPro.open(
             activity,
             payUPaymentParams,
@@ -226,20 +219,24 @@ public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,Plug
               @Override
               public void generateHash(HashMap<String, String> valueMap, PayUHashGenerationListener hashGenerationListener) {
 
-                     String hashName = valueMap.get(PayUCheckoutProConstants.CP_HASH_NAME);
-                    String hashData = valueMap.get(PayUCheckoutProConstants.CP_HASH_STRING);
-                    String hashVal="";
-                    HashMap<String, String> dataMap = new HashMap<>();
-                    if(hashName!=null&&(!hashName.isEmpty())&&hashName.equals("vas_for_mobile_sdk")){
-                        hashVal=hashData+salt;
-                    }else {
-                        hashVal=hashData+salt;
-                    }
+                  HashMap<String, String> dataMap = new HashMap<>();
+                  String hashName = valueMap.get(PayUCheckoutProConstants.CP_HASH_NAME);
 
-                    String calculatedHash=hashCal("SHA-512", hashVal);
-                    dataMap.put(hashName, calculatedHash);
-                    hashGenerationListener.onHashGenerated(dataMap);
 
+                  if (!paymentHashCode.isEmpty()){
+                      dataMap.put(hashName, paymentHashCode);
+                  }else{
+                      String hashData = valueMap.get(PayUCheckoutProConstants.CP_HASH_STRING);
+                      String hashVal="";
+                      if(hashName!=null&&(!hashName.isEmpty())&&hashName.equals("vas_for_mobile_sdk")){
+                          hashVal=hashData+salt;
+                      }else {
+                          hashVal=hashData+salt;
+                      }
+                      String calculatedHash=hashCal("SHA-512", hashVal);
+                      dataMap.put(hashName, calculatedHash);
+                  }
+                  hashGenerationListener.onHashGenerated(dataMap);
 
               }
             }

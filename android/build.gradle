@@ -1,4 +1,6 @@
-group 'com.example.payumoney_sdk'
+apply plugin: 'com.android.library'
+group 'com.kishorp18.android.payumoney_sdk'
+apply plugin: 'kotlin-android'
 version '1.0'
 
 buildscript {
@@ -8,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:4.1.2'
     }
 }
 
@@ -19,7 +21,6 @@ rootProject.allprojects {
     }
 }
 
-apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 30
@@ -39,6 +40,6 @@ android {
 }
 
 dependencies{
-    implementation 'in.payu:payu-checkout-pro:1.7.1'
+    implementation 'in.payu:payu-checkout-pro:1.7.4'
 
 }
