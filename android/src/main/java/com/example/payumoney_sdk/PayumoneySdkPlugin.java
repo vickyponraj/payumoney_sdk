@@ -52,7 +52,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 /** PayumoneySdkPlugin */
-public class PayUMoneySdkPlugin implements FlutterPlugin, MethodCallHandler,PluginRegistry.ActivityResultListener,ActivityAware {
+public class PayumoneySdkPlugin implements FlutterPlugin, MethodCallHandler,PluginRegistry.ActivityResultListener,ActivityAware {
   private MethodChannel channel;
   private MethodChannel.Result mainResult;
   private Activity activity;
