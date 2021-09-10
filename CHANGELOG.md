@@ -55,3 +55,6 @@
 
 ## 1.0.6
 -Migrated to null safety
+
+## 1.0.7
+-Bug fixes
