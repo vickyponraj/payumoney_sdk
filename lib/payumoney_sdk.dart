@@ -16,20 +16,20 @@ class PayumoneySdk {
 
 
 
-  Future<Map<dynamic,dynamic>> buildPaymentParams({
-     @required String amount,
-     @required String transactionId,
-     @required String phone,
-     @required String productInfo,
-     @required String firstName,
-     @required String email,
-     @required String hash,
-     @required String salt,
+  Future<Map<dynamic,dynamic>?> buildPaymentParams({
+     required String amount,
+     required String transactionId,
+     required String phone,
+     required String productInfo,
+     required String firstName,
+     required String email,
+     required String hash,
+     required String salt,
      String successURL="https://www.payumoney.com/mobileapp/payumoney/success.php",
      String failureURL="https://www.payumoney.com/mobileapp/payumoney/failure.php",
-     @required String merchantKey,
+     required String merchantKey,
      bool isProduction=false,
-     String userCredentials,
+     String? userCredentials,
      String merchantName="Payu",
     bool showExitConfirmation=true
    })async{
@@ -70,16 +70,16 @@ class PayumoneySdk {
    }
 
 
- Future<void> setPayuSiParam(
-     @required bool isFreeTrial,
-     @required String billingAmt,
-     @required String billingCycle,
-     @required String setBillingInterval,
-     @required String paymentStartDate,
-     @required String paymentEndDate,
-     @required String remarks,
+ Future<void> setPayuSiParam({
+     required bool isFreeTrial,
+     required String billingAmt,
+     required String billingCycle,
+     required String setBillingInterval,
+     required String paymentStartDate,
+     required String paymentEndDate,
+     required String remarks,}
 
-     ){
+     )async {
     try{
       _channel.invokeMethod("setPayuSiParam",{
         "isFreeTrial":"${isFreeTrial}",
