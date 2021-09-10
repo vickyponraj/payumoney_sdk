@@ -52,3 +52,6 @@
 
 ## 1.0.5
 -Updated Payu checkout pro sdk to 1.7.1
+
+## 1.0.6
+-Migrated to null safety
