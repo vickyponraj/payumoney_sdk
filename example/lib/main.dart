@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
               SizedBox(
                 height: 100,
               ),
-              FlatButton(
+              TextButton(
                   onPressed: () {
                     startPayment();
                   },
