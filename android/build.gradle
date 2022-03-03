@@ -41,5 +41,8 @@ android {
 
 dependencies{
     implementation 'in.payu:payu-checkout-pro:1.7.4'
-
+    implementation 'in.payu:payu-sdk:5.3.5'
+    implementation 'in.payu:phonepe-intent:1.6.1'
+    implementation 'in.payu:payu-gpay:1.4.0'
+    implementation 'in.payu:upisdk:1.5.3'
 }
